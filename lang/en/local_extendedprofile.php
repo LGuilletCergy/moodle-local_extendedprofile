@@ -33,7 +33,7 @@
 $string['pluginname'] = 'Local extended profile';
 $string['teachedcourses'] = 'Teached courses';
 $string['followedcourses'] = 'Followed courses';
-$string['collabcourses'] = 'Collaborative courses';
+$string['collabcourses'] = 'Collaborative spaces';
 $string['persocourses'] = 'Personal space';
 $string['logingraph'] = 'Login time during the last 7 days';
 $string['tablecourses'] = 'Courses table';

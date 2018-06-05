@@ -34,7 +34,7 @@
 $string['pluginname'] = 'Profil étendu';
 $string['teachedcourses'] = 'Cours assuré(s)';
 $string['followedcourses'] = 'Cours suivi(s)';
-$string['collabcourses'] = 'Cours collaboratifs';
+$string['collabcourses'] = 'Espaces collaboratifs';
 $string['persocourses'] = 'Espace personnel';
 $string['logingraph'] = 'Temps de connexion durant les 7 derniers jours';
 $string['tablecourses'] = 'Tableau des cours';
