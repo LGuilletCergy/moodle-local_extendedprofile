@@ -65,7 +65,34 @@ function local_extendedprofile_myprofile_navigation (core_user\output\myprofile\
         $mail = get_string('mail', 'local_extendedprofile')." : $user->email";
         $login = get_string('login', 'local_extendedprofile')." : $user->username";
         // Ne l'afficher que si utilisateur ou admin.
-        $idnumber = get_string('idnumber', 'local_extendedprofile')." : $user->idnumber";
+
+        $rolestudentid = $DB->get_record('role', array('shortname' => 'localstudent'))->id;
+        $roleteacherid = $DB->get_record('role', array('shortname' => 'localteacher'))->id;
+        $rolestaffid = $DB->get_record('role', array('shortname' => 'localstaff'))->id;
+        $contextsystemid = context_system::instance()->id;
+
+        if ($DB->record_exists('role_assignments',
+                array('userid' => $user->id, 'roleid' => $rolestudentid,
+                    'contextid' => $contextsystemid))) {
+
+            $idnumber = get_string('idnumberstudent', 'local_extendedprofile')." : $user->idnumber";
+
+        } else if ($DB->record_exists('role_assignments',
+                array('userid' => $user->id, 'roleid' => $roleteacherid,
+                    'contextid' => $contextsystemid))) {
+
+            $idnumber = get_string('idnumberteacher', 'local_extendedprofile')." : $user->idnumber";
+
+        } else if ($DB->record_exists('role_assignments',
+                array('userid' => $user->id, 'roleid' => $rolestaffid,
+                    'contextid' => $contextsystemid))){
+
+            $idnumber = get_string('idnumberstaff', 'local_extendedprofile')." : $user->idnumber";
+
+        } else {
+
+            $idnumber = get_string('idnumber', 'local_extendedprofile')." : $user->idnumber";
+        }
 
         $dbman = $DB->get_manager();
 
