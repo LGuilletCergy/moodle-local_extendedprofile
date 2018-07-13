@@ -72,3 +72,4 @@ $string['table'] = 'Tableau';
 $string['average'] = 'Moyenne';
 $string['cohorts'] = 'Cohortes';
 $string['nocohort'] = 'Aucune cohorte';
+$string['privacy:metadata'] = 'Le plugin profil étendu ne stocke aucune donnée.';

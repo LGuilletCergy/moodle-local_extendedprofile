@@ -71,3 +71,4 @@ $string['table'] = 'Table';
 $string['average'] = 'Average';
 $string['cohorts'] = 'Cohorts';
 $string['nocohort'] = 'None';
+$string['privacy:metadata'] = 'The extendedprofile plugin does not store any data.';

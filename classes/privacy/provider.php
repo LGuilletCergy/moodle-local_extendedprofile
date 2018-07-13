@@ -27,13 +27,26 @@
  * @copyright 2017 Laurent Guillet <laurent.guillet@u-cergy.fr>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
- * File : version.php
- * Version file
+ * File : provider.php
+ * RGPD file
  */
 
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018071300;
-$plugin->release   = '1.0.0';
-$plugin->requires  = 2017111300; // Moodle 3.4 release and upwards.
-$plugin->component = 'local_extendedprofile';
+namespace local_extendedprofile\privacy;
+use core_privacy\local\metadata\collection;
+
+class provider implements
+    // This plugin does not store any personal user data.
+    \core_privacy\local\metadata\null_provider {
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason() : string {
+        return 'privacy:metadata';
+    }
+}
