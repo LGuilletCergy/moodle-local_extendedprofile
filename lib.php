@@ -74,7 +74,7 @@ function local_extendedprofile_myprofile_navigation (core_user\output\myprofile\
         if ($DB->record_exists('role_assignments',
                 array('userid' => $user->id, 'roleid' => $roleteacherid,
                     'contextid' => $contextsystemid)) || $DB->record_exists('role_assignments',
-                array('userid' => $user->id, 'roleid' => $roleteacherid,
+                array('userid' => $user->id, 'roleid' => $rolestaffid,
                     'contextid' => $contextsystemid))) {
 
             $login = "";
@@ -92,7 +92,7 @@ function local_extendedprofile_myprofile_navigation (core_user\output\myprofile\
         } else if ($DB->record_exists('role_assignments',
                 array('userid' => $user->id, 'roleid' => $roleteacherid,
                     'contextid' => $contextsystemid)) || $DB->record_exists('role_assignments',
-                array('userid' => $user->id, 'roleid' => $roleteacherid,
+                array('userid' => $user->id, 'roleid' => $rolestaffid,
                     'contextid' => $contextsystemid))) {
 
             $idnumber = "";
