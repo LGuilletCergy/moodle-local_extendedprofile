@@ -63,13 +63,25 @@ function local_extendedprofile_myprofile_navigation (core_user\output\myprofile\
         $name = get_string('name', 'local_extendedprofile')." : $user->lastname";
         $firstname = get_string('firstname', 'local_extendedprofile')." : $user->firstname";
         $mail = get_string('mail', 'local_extendedprofile')." : $user->email";
-        $login = get_string('login', 'local_extendedprofile')." : $user->username";
+
         // Ne l'afficher que si utilisateur ou admin.
 
         $rolestudentid = $DB->get_record('role', array('shortname' => 'localstudent'))->id;
         $roleteacherid = $DB->get_record('role', array('shortname' => 'localteacher'))->id;
         $rolestaffid = $DB->get_record('role', array('shortname' => 'localstaff'))->id;
         $contextsystemid = context_system::instance()->id;
+
+        if ($DB->record_exists('role_assignments',
+                array('userid' => $user->id, 'roleid' => $roleteacherid,
+                    'contextid' => $contextsystemid)) || $DB->record_exists('role_assignments',
+                array('userid' => $user->id, 'roleid' => $roleteacherid,
+                    'contextid' => $contextsystemid))) {
+
+            $login = "";
+        } else {
+
+            $login = get_string('login', 'local_extendedprofile')." : $user->username";
+        }
 
         if ($DB->record_exists('role_assignments',
                 array('userid' => $user->id, 'roleid' => $rolestudentid,
@@ -79,15 +91,11 @@ function local_extendedprofile_myprofile_navigation (core_user\output\myprofile\
 
         } else if ($DB->record_exists('role_assignments',
                 array('userid' => $user->id, 'roleid' => $roleteacherid,
+                    'contextid' => $contextsystemid)) || $DB->record_exists('role_assignments',
+                array('userid' => $user->id, 'roleid' => $roleteacherid,
                     'contextid' => $contextsystemid))) {
 
-            $idnumber = get_string('idnumberteacher', 'local_extendedprofile')." : $user->idnumber";
-
-        } else if ($DB->record_exists('role_assignments',
-                array('userid' => $user->id, 'roleid' => $rolestaffid,
-                    'contextid' => $contextsystemid))){
-
-            $idnumber = get_string('idnumberstaff', 'local_extendedprofile')." : $user->idnumber";
+            $idnumber = "";
 
         } else {
 
@@ -119,22 +127,22 @@ function local_extendedprofile_myprofile_navigation (core_user\output\myprofile\
 
             if ($DB->record_exists('local_usercreation_type', array('userid' => $user->id))) {
 
-                $listtypeteacher = $DB->get_records('local_usercreation_type', array('userid' => $user->id));
-
-                $htmllistteachertype = "<ul>";
-                foreach ($listtypeteacher as $typeteacher) {
-
-                    $htmllistteachertype .= "<li>".$typeteacher->typeteacher."</li>";
-                }
-                $htmllistteachertype .= "</ul>";
-                $typeteacherstring = get_string('typeteacher', 'local_extendedprofile').$htmllistteachertype;
-                $nodetypeteacher = new core_user\output\myprofile\node('contactinfo', 'typeteacher',
-                    $typeteacherstring);
-
-                if (!isset($categorycontactinfo->nodes[$nodetypeteacher->name])) {
-
-                    $categorycontactinfo->add_node($nodetypeteacher);
-                }
+//                $listtypeteacher = $DB->get_records('local_usercreation_type', array('userid' => $user->id));
+//
+//                $htmllistteachertype = "<ul>";
+//                foreach ($listtypeteacher as $typeteacher) {
+//
+//                    $htmllistteachertype .= "<li>".$typeteacher->typeteacher."</li>";
+//                }
+//                $htmllistteachertype .= "</ul>";
+//                $typeteacherstring = get_string('typeteacher', 'local_extendedprofile').$htmllistteachertype;
+//                $nodetypeteacher = new core_user\output\myprofile\node('contactinfo', 'typeteacher',
+//                    $typeteacherstring);
+//
+//                if (!isset($categorycontactinfo->nodes[$nodetypeteacher->name])) {
+//
+//                    $categorycontactinfo->add_node($nodetypeteacher);
+//                }
             }
         }
 
@@ -154,7 +162,7 @@ function local_extendedprofile_myprofile_navigation (core_user\output\myprofile\
                 $nbrevets = 0;
 
                 $listvetsstring = get_string('listvets', 'local_extendedprofile')." : ";
-                $tabvetstrings = [];
+                $tabvetstrings = array();
 
                 foreach ($listvets as $vet) {
 
@@ -164,8 +172,15 @@ function local_extendedprofile_myprofile_navigation (core_user\output\myprofile\
 
                         $nextyearindex = $yearindex + 1;
 
-                        $tabvetstrings[$yearindex] .= "<br>&nbsp&nbsp&nbsp&nbsp$yearindex-$nextyearindex :"
+						if (isset($tabvetstrings[$yearindex])) {
+
+							$tabvetstrings[$yearindex] .= "<br>&nbsp&nbsp&nbsp&nbsp$yearindex-$nextyearindex :"
                                 . " $vet->vetname";
+						} else {
+
+							$tabvetstrings[$yearindex] = "<br>&nbsp&nbsp&nbsp&nbsp$yearindex-$nextyearindex :"
+                                . " $vet->vetname";
+						}
                     } else {
 
                         $tabvetstrings[99999] .= "<br>&nbsp&nbsp&nbsp&nbsp".
@@ -711,7 +726,7 @@ function createcoursetable($category, $user) {
             $localworkshop++;
             $totalworkshop++;
 
-            if ($DB->record_exists('quiz_attempts', array('workshopid' => $workshop->id,
+            if ($DB->record_exists('workshop_submissions', array('workshopid' => $workshop->id,
                 'authorid' => $user->id))) {
 
                 $localusedworkshop++;
